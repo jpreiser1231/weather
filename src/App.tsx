@@ -1,10 +1,10 @@
-import {useEffect, useState} from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import {useEffect,} from 'react'
+// import reactLogo from './assets/react.svg'
+// import viteLogo from '/vite.svg'
 import './App.css'
 
 function App() {
-    const [searchedValue, search] = useState("Freehold")
+    // const [searchedValue, search] = useState("Freehold")
     useEffect(() => {
         fetch(`https://api.geoapify.com/v1/geocode/autocomplete?text=${"cuppertino"}&type=city&limit=10&filter=countrycode%3Aus&format=json&apiKey=b8568cb9afc64fad861a69edbddb2658`)
             .then((response) => response.json())
