@@ -2,41 +2,43 @@ import {useEffect, useState} from "react";
 
 export function useAutocomplete(userInput: string)
 {
-    const [results, setResults] = useState<any[]>([])
+    const [results, setResults] = useState<{ city: string, state:string, formatted: string }[]>([])
     useEffect(() => {
-        fetch(`https://api.geoapify.com/v1/geocode/autocomplete?text=${userInput}&type=city&limit=10&filter=countrycode%3Aus&format=json&apiKey=b8568cb9afc64fad861a69edbddb2658`)
-            .then((response) => response.json())
-            .then((data) => {
-                setResults(data.results)//fix
-            })
-            .catch((error) => console.log(error));
-    },);
+        if(userInput.length > 0) {
+            fetch(`https://api.geoapify.com/v1/geocode/autocomplete?text=${userInput}&type=city&limit=10&filter=countrycode%3Aus&format=json&apiKey=b8568cb9afc64fad861a69edbddb2658`)
+                .then((response) => response.json())
+                .then((data) => {
+                    setResults(data.results)//fix
+                })
+                .catch((error) => console.log(error));
+        }
+    },[userInput]);
     return results;
 }
 
 export function useCoordinates(input: string)
 {
-    const [results, setResults] = useState<any[]>([])
+    const [results, setResults] = useState<{lat: number, lon:number}>({lat: 0, lon: 0})
     useEffect(() => {
         fetch(`https://api.geoapify.com/v1/geocode/search?text=${input},%20United%20States%20of%20America&lang=en&limit=1&type=city&filter=countrycode:us&format=json&apiKey=b8568cb9afc64fad861a69edbddb2658`)
             .then((response) => response.json())
             .then((data) => {
-                setResults(data.results);
+                setResults(data.results[0]);
             })
             .catch((error) => console.log(error));
-    },);
-    return results;
+    },[input]);
+    return [results.lat, results.lon];
 }
 
 export function useWeather(lat: number, lon: number) {
-    const [results, setResults] = useState<any[]>([])
+    const [results, setResults] = useState<string[]>([])
     useEffect(() => {
         fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=weather_code,temperature_2m_min,temperature_2m_max,sunrise,sunset,uv_index_max,precipitation_sum,precipitation_hours,precipitation_probability_max,apparent_temperature_max,apparent_temperature_min,wind_speed_10m_max,wind_gusts_10m_max&hourly=temperature_2m,relative_humidity_2m,dew_point_2m,apparent_temperature,precipitation_probability,weather_code,visibility,wind_speed_10m,wind_direction_10m,wind_gusts_10m,precipitation,uv_index,is_day&current=temperature_2m,relative_humidity_2m,apparent_temperature,is_day,wind_speed_10m,wind_direction_10m,wind_gusts_10m,precipitation,weather_code&timezone=auto&wind_speed_unit=mph&temperature_unit=fahrenheit&precipitation_unit=inch`)
             .then((response) => response.json())
             .then((data) => {
-                setResults(data.results)
+                setResults(data.current)
             })
             .catch((error) => console.log(error));
-    },);
+    },[lat, lon]);
     return results;
 }
