@@ -2,7 +2,7 @@ import {useEffect, useState} from "react";
 
 export function useAutocomplete(userInput: string)
 {
-    const [results, setResults] = useState<{ city: string, state:string, formatted: string }[]>([])
+    const [results, setResults] = useState<{formatted: string }[]>([])
     useEffect(() => {
         if(userInput.length > 0) {
             fetch(`https://api.geoapify.com/v1/geocode/autocomplete?text=${userInput}&type=city&limit=10&filter=countrycode%3Aus&format=json&apiKey=b8568cb9afc64fad861a69edbddb2658`)
@@ -30,13 +30,75 @@ export function useCoordinates(input: string)
     return [results.lat, results.lon];
 }
 
+export type Weather =
+    {
+        lat: number;
+        lon: number;
+        timezone: string;
+        timezone_abbreviaion: string;
+        utc_offset_seconds: number;
+        daily: dailyWeather;
+        hourly: hourlyWeather;
+        current: currentWeather;
+    }
+
+type dailyWeather =
+    {
+        time: string[];
+        weatherCode: number[];
+        temperature_2m_min: number[];
+        temperature_2m_max: number[];
+        sunrise: string[];
+        sunset: string[];
+        uv_index_max: number[];
+        precipitation_sum: number[];
+        precipitation_hours: number[];
+        precipitation_probability_max: number[];
+        apparent_temperature_max: number[];
+        apparent_temperature_min: number[];
+        wind_speed_10m_max: number[];
+        wind_gusts_10m_max: number[];
+    }
+type hourlyWeather =
+    {
+        time: string[];
+        temperature_2m: number[];
+        relative_humidity_2m: number[];
+        dew_point_2m: number[];
+        apparent_temperature: number[];
+        precipitation_probability: number[];
+        weather_code: number[];
+        visibility: number[];
+        wind_speed_10m: number[];
+        wind_direction_10m: number[];
+        wind_gusts_10m: number[];
+        precipitation: number[];
+        uv_index: number[];
+        is_day: number[];
+    }
+type currentWeather =
+    {
+        time: string;
+        interval: number;
+        temperature_2m: number;
+        relative_humidity_2m: number;
+        apparent_temperature: number;
+        is_day: number;
+        wind_speed_10m: number;
+        wind_direction_10m: number;
+        wind_gusts_10m: number;
+        precipitation: number;
+        weather_code: number;
+    }
+
+
 export function useWeather(lat: number, lon: number) {
-    const [results, setResults] = useState<string[]>([])
+    const [results, setResults] = useState<Weather | null>(null)
     useEffect(() => {
         fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=weather_code,temperature_2m_min,temperature_2m_max,sunrise,sunset,uv_index_max,precipitation_sum,precipitation_hours,precipitation_probability_max,apparent_temperature_max,apparent_temperature_min,wind_speed_10m_max,wind_gusts_10m_max&hourly=temperature_2m,relative_humidity_2m,dew_point_2m,apparent_temperature,precipitation_probability,weather_code,visibility,wind_speed_10m,wind_direction_10m,wind_gusts_10m,precipitation,uv_index,is_day&current=temperature_2m,relative_humidity_2m,apparent_temperature,is_day,wind_speed_10m,wind_direction_10m,wind_gusts_10m,precipitation,weather_code&timezone=auto&wind_speed_unit=mph&temperature_unit=fahrenheit&precipitation_unit=inch`)
             .then((response) => response.json())
             .then((data) => {
-                setResults(data.current)
+                setResults(data)
             })
             .catch((error) => console.log(error));
     },[lat, lon]);

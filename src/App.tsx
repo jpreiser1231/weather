@@ -1,5 +1,5 @@
 import {useEffect, useState} from 'react'
-import {useAutocomplete, useCoordinates} from './hooks.tsx'
+import {useAutocomplete, useCoordinates, useWeather} from './hooks.tsx'
 
 import './App.css'
 
@@ -7,7 +7,8 @@ function App() {
     const [searchedValue, setSearchValue] = useState<string>("Freehold");
     const autoComplete = useAutocomplete(searchedValue);
     const [finalSearchedValue, setFinalSearchedValue] = useState<string>("Freehold, NJ");
-    const [lat,lon] = useCoordinates(finalSearchedValue)
+    const [lat,lon] = useCoordinates(finalSearchedValue);
+    const weather = useWeather(lat,lon);
 
   return (
       <>
@@ -19,11 +20,12 @@ function App() {
               autoComplete.map((item, index) =>
                   <div key = {index}>
                       <div id = "autoCompleteResults"><button onClick={() => {
-                          setFinalSearchedValue(`${item.city}, ${item.state}`);
-                          setSearchValue(`${item.city}, ${item.state}`);
+                          setFinalSearchedValue(`${item.formatted}`);
+                          setSearchValue(`${item.formatted}`);
                       }}>{item.formatted}</button></div>
                   </div>)
           }
+
           {lat}, {lon}
       </>
   )
