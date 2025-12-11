@@ -2,6 +2,7 @@ import {useEffect, useState} from 'react'
 import {useAutocomplete, useCoordinates, useWeather} from './hooks.tsx'
 
 import './App.css'
+import {Weather} from "./weather.tsx";
 
 function App() {
     const [searchedValue, setSearchValue] = useState<string>("Freehold");
@@ -25,8 +26,10 @@ function App() {
                       }}>{item.formatted}</button></div>
                   </div>)
           }
-
           {lat}, {lon}
+          {
+              weather && <Weather weather = {weather}/>
+          }
       </>
   )
 }

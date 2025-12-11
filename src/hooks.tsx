@@ -45,7 +45,7 @@ export type Weather =
 type dailyWeather =
     {
         time: string[];
-        weatherCode: number[];
+        weather_code: number[];
         temperature_2m_min: number[];
         temperature_2m_max: number[];
         sunrise: string[];
