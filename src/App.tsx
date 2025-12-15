@@ -1,6 +1,6 @@
 import {useEffect, useState} from 'react'
 import {useAutocomplete, useCoordinates, useWeather} from './hooks.tsx'
-
+import Input from './search-stying.tsx'
 import './App.css'
 import {Weather} from "./weather.tsx";
 
@@ -13,9 +13,8 @@ function App() {
 
   return (
       <>
-          <input value={searchedValue} placeholder="Enter search here"
-                 onChange={e => setSearchValue(e.target.value)}
-          />
+          <Input searchedValue = {searchedValue} setSearchValue={setSearchValue} ></Input>
+
           <button onClick = {() => setFinalSearchedValue(searchedValue)}>Search</button>
           {
               autoComplete.map((item, index) =>
