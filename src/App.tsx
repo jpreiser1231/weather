@@ -3,6 +3,7 @@ import {useAutocomplete, useCoordinates, useWeather} from './hooks.tsx'
 import Input from './search-stying.tsx'
 import './App.css'
 import {Weather} from "./weather.tsx";
+import Card from "./weather-styling.tsx"
 
 function App() {
     const [searchedValue, setSearchValue] = useState<string>("Freehold");
@@ -13,8 +14,8 @@ function App() {
 
   return (
       <>
-          <Input searchedValue = {searchedValue} setSearchValue={setSearchValue} ></Input>
-
+          <Input searchedValue = {searchedValue} setSearchValue={setSearchValue} setFinalSearchedValue={setFinalSearchedValue}></Input>
+<Card></Card>
           <button onClick = {() => setFinalSearchedValue(searchedValue)}>Search</button>
           {
               autoComplete.map((item, index) =>
