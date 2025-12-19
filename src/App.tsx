@@ -15,7 +15,7 @@ function App() {
   return (
       <>
           <Input searchedValue = {searchedValue} setSearchValue={setSearchValue} setFinalSearchedValue={setFinalSearchedValue}></Input>
-<Card></Card>
+
           <button onClick = {() => setFinalSearchedValue(searchedValue)}>Search</button>
           {
               autoComplete.map((item, index) =>
@@ -29,6 +29,9 @@ function App() {
           {lat}, {lon}
           {
               weather && <Weather weather = {weather}/>
+          }
+          {
+              weather && <Card weather={weather} location={finalSearchedValue} ></Card>
           }
       </>
   )
