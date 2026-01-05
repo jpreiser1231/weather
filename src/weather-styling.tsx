@@ -1,6 +1,3 @@
-import React from 'react';
-import styled from 'styled-components';
-import {useEffect, useState} from "react";
 import type {Weather} from "./hooks.tsx"
 
     const Card = ({weather, location}: {weather:Weather, location:string}) => {
@@ -28,16 +25,26 @@ import type {Weather} from "./hooks.tsx"
                                 <span className="mt-1 text-2xl text-white/80">°F</span>
                             </div>
                             <div className="relative">
-                                <div
-                                    className="absolute -inset-4 rounded-full bg-white/20 blur-xl transition-opacity duration-300 group-hover:opacity-75"/>
-                                <svg className="relative h-16 w-16 text-white" viewBox="0 0 24 24" fill="currentColor">
-                                    <path
-                                        d="M12 2.25a.75.75 0 01.75.75v2.25a.75.75 0 01-1.5 0V3a.75.75 0 01.75-.75zM7.5 12a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM18.894 6.166a.75.75 0 00-1.06-1.06l-1.591 1.59a.75.75 0 101.06 1.061l1.591-1.59zM21.75 12a.75.75 0 01-.75.75h-2.25a.75.75 0 010-1.5H21a.75.75 0 01.75.75zM17.834 18.894a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 10-1.061 1.06l1.59 1.591zM12 18a.75.75 0 01.75.75V21a.75.75 0 01-1.5 0v-2.25A.75.75 0 0112 18zM7.758 17.303a.75.75 0 00-1.061-1.06l-1.591 1.59a.75.75 0 001.06 1.061l1.591-1.59zM6 12a.75.75 0 01-.75.75H3a.75.75 0 010-1.5h2.25A.75.75 0 016 12zM6.697 7.757a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 00-1.061 1.06l1.59 1.591z"/>
-                                </svg>
+                                <div className="absolute -inset-4 rounded-full bg-white/20 blur-xl transition-opacity duration-300 group-hover:opacity-75"/>
+                                {
+                                    weather.current.is_day ?
+                                        <svg className="relative h-16 w-16 text-white" viewBox="0 0 24 24"
+                                             fill="currentColor">
+                                            <path
+                                                d="M12 2.25a.75.75 0 01.75.75v2.25a.75.75 0 01-1.5 0V3a.75.75 0 01.75-.75zM7.5 12a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM18.894 6.166a.75.75 0 00-1.06-1.06l-1.591 1.59a.75.75 0 101.06 1.061l1.591-1.59zM21.75 12a.75.75 0 01-.75.75h-2.25a.75.75 0 010-1.5H21a.75.75 0 01.75.75zM17.834 18.894a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 10-1.061 1.06l1.59 1.591zM12 18a.75.75 0 01.75.75V21a.75.75 0 01-1.5 0v-2.25A.75.75 0 0112 18zM7.758 17.303a.75.75 0 00-1.061-1.06l-1.591 1.59a.75.75 0 001.06 1.061l1.591-1.59zM6 12a.75.75 0 01-.75.75H3a.75.75 0 010-1.5h2.25A.75.75 0 016 12zM6.697 7.757a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 00-1.061 1.06l1.59 1.591z"/>
+                                        </svg>
+                                        :
+                                        <svg width="100" height="100" viewBox="0 0 100 100"
+                                             xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M50 20A40 40 0 1 0 50 70 30 30 0 1 1 50 20z" stroke="black"
+                                                  stroke-width="2" fill="yellow"/>
+                                        </svg>
+                                }
+
                             </div>
                         </div>
                         <div className="mt-1 text-2xl text-white/80">
-                            Feels Like {weather.current.apparent_temperature} °F
+                        Feels Like {weather.current.apparent_temperature} °F
                         </div>
                         <div className="mt-8 grid grid-cols-3 gap-4 rounded-xl bg-white/10 p-4 backdrop-blur-sm">
                             <div className="flex flex-col items-center gap-1">
@@ -78,19 +85,58 @@ import type {Weather} from "./hooks.tsx"
                             <h4 className="mb-4 text-sm font-medium text-white/80">Hourly Forecast</h4>
                             {
                                     <div >
-                                        <span>{new Date(weather.hourly.time[0]).toLocaleString("en-US", options)}</span>
-                                        {weather.hourly.temperature_2m[0]} °F
-                                        {weather.hourly.relative_humidity_2m[0]}
-                                        Feels Like {weather.hourly.apparent_temperature[0]} °F
-                                        {weather.hourly.precipitation_probability[0]}%
-                                        {weather.hourly.weather_code[0]}
-                                        {weather.hourly.visibility[0]}
-                                        {weather.hourly.wind_speed_10m[0]}mph
-                                        {weather.hourly.wind_direction_10m[0]}
-                                        {weather.hourly.wind_gusts_10m[0]}mph
-                                        {weather.hourly.precipitation[0]} inches
-                                        {weather.hourly.uv_index[0]}
-                                        {weather.hourly.is_day[0]}
+                                        {weather.hourly.time.map((_item, index) =>
+                                            <div key = {index}>
+                                                <div className="flex items-center justify-between rounded-xl bg-white/10 px-4 py-3 backdrop-blur-sm" id = "hourly-item">
+                                                    <div>
+                                                        <span className="text-sm font-medium text-white">{weather.hourly.time[index].substring(0, weather.hourly.time[index].indexOf("T"))} {new Date(weather.hourly.time[index]).toLocaleString("en-US", options)}</span>
+                                                    </div>
+                                                    <div className="flex items-center gap-4">
+                                                        <div className="item-center flex gap-4">
+                                                            <span className="text-sm text-white/80">
+                                                                {weather.hourly.temperature_2m[index]} °F
+                                                                Feels Like {weather.hourly.apparent_temperature[index]} °F
+                                                            </span>
+                                                            <span className="text-sm text-white/80">
+                                                                Precipitation: {weather.hourly.precipitation_probability[index]}%
+                                                                 {weather.hourly.precipitation[index]} inches
+                                                            </span>
+                                                            <span className="text-sm text-white/80">
+                                                                Wind Speed: {weather.hourly.wind_speed_10m[index]}mph
+                                                                Wind Direction: {weather.hourly.wind_direction_10m[index]} degrees
+                                                                Gusts At: {weather.hourly.wind_gusts_10m[index]}mph
+                                                            </span>
+                                                            <span className="text-sm text-white/80">
+                                                                Wind Speed: {weather.hourly.wind_speed_10m[index]}mph
+                                                                Wind Direction: {weather.hourly.wind_direction_10m[index]} degrees
+                                                                Gusts At: {weather.hourly.wind_gusts_10m[index]}mph
+                                                            </span>
+                                                            <span className="text-sm text-white/80">
+                                                                Humidity: {weather.hourly.relative_humidity_2m[index]}
+                                                                Visibility: {weather.hourly.visibility[index]}
+                                                            </span>
+                                                            <span className="text-sm text-white/80">
+                                                                UV Index: {weather.hourly.uv_index[index]}
+                                                            </span>
+                                                            {
+                                                                weather.hourly.is_day[index] ?
+                                                                    <svg className="relative h-16 w-16 text-white" viewBox="0 0 24 24"
+                                                                         fill="currentColor">
+                                                                        <path
+                                                                            d="M12 2.25a.75.75 0 01.75.75v2.25a.75.75 0 01-1.5 0V3a.75.75 0 01.75-.75zM7.5 12a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM18.894 6.166a.75.75 0 00-1.06-1.06l-1.591 1.59a.75.75 0 101.06 1.061l1.591-1.59zM21.75 12a.75.75 0 01-.75.75h-2.25a.75.75 0 010-1.5H21a.75.75 0 01.75.75zM17.834 18.894a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 10-1.061 1.06l1.59 1.591zM12 18a.75.75 0 01.75.75V21a.75.75 0 01-1.5 0v-2.25A.75.75 0 0112 18zM7.758 17.303a.75.75 0 00-1.061-1.06l-1.591 1.59a.75.75 0 001.06 1.061l1.591-1.59zM6 12a.75.75 0 01-.75.75H3a.75.75 0 010-1.5h2.25A.75.75 0 016 12zM6.697 7.757a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 00-1.061 1.06l1.59 1.591z"/>
+                                                                    </svg>
+                                                                    :
+                                                                    <svg width="100" height="100" viewBox="0 0 100 100"
+                                                                         xmlns="http://www.w3.org/2000/svg">
+                                                                        <path d="M50 20A40 40 0 1 0 50 70 30 30 0 1 1 50 20z" stroke="black"
+                                                                              stroke-width="2" fill="yellow"/>
+                                                                    </svg>
+                                                            }
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>)}
                                     </div>
                             }
 
@@ -98,8 +144,7 @@ import type {Weather} from "./hooks.tsx"
                         <div className="mt-8">
                             <h4 className="mb-4 text-sm font-medium text-white/80">7-Day Forecast</h4>
                                 <div className="space-y-4">
-                                    <div
-                                        className="flex items-center justify-between rounded-xl bg-white/10 px-4 py-3 backdrop-blur-sm">
+                                    <div className="flex items-center justify-between rounded-xl bg-white/10 px-4 py-3 backdrop-blur-sm">
                                         <div>
                                             <span className="text-sm font-medium text-white">Tomorrow</span>
                                         </div>

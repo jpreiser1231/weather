@@ -1,8 +1,7 @@
-import {useEffect, useState} from 'react'
+import {useState} from 'react'
 import {useAutocomplete, useCoordinates, useWeather} from './hooks.tsx'
 import Input from './search-stying.tsx'
 import './App.css'
-import {Weather} from "./weather.tsx";
 import Card from "./weather-styling.tsx"
 
 function App() {
@@ -16,7 +15,6 @@ function App() {
       <>
           <Input searchedValue = {searchedValue} setSearchValue={setSearchValue} setFinalSearchedValue={setFinalSearchedValue}></Input>
 
-          <button onClick = {() => setFinalSearchedValue(searchedValue)}>Search</button>
           {
               autoComplete.map((item, index) =>
                   <div key = {index}>
@@ -26,10 +24,7 @@ function App() {
                       }}>{item.formatted}</button></div>
                   </div>)
           }
-          {lat}, {lon}
-          {
-              weather && <Weather weather = {weather}/>
-          }
+
           {
               weather && <Card weather={weather} location={finalSearchedValue} ></Card>
           }

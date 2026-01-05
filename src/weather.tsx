@@ -36,6 +36,7 @@ export function Weather({weather}: {weather: Weather})
                         {realWeather.hourly.precipitation[index]},
                         {realWeather.hourly.uv_index[index]},
                         {realWeather.hourly.is_day[index]}
+                        {realWeather.hourly.dew_point_2m[index]}
                     </div>)
             }
             DAILY

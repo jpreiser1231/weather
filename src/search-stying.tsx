@@ -1,4 +1,3 @@
-import React, {useState} from 'react';
 import styled from 'styled-components';
 
 const Input = ({searchedValue, setSearchValue, setFinalSearchedValue}: {searchedValue: string, setSearchValue: (s:string) => void, setFinalSearchedValue: (s:string) => void}) => {
